@@ -219,3 +219,29 @@ body {
 .movie-title {
     align-self: center;
 }
+
+.movie-genre {
+    font-size: 0.6rem;
+}
+
+.full-star {
+    color: orange;
+}
+
+.half-star {
+    --color-full: orange;
+    --color-empty: #ddd;
+    --ratio: 50%;
+  
+    color: var(--color-empty);
+    background: linear-gradient(
+      to right,
+      var(--color-full),
+      var(--color-full) var(--ratio),
+      var(--color-empty) var(--ratio),
+      var(--color-empty)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
