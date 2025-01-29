@@ -4,10 +4,9 @@ const search_btn = document.querySelector(".search-btn");
 
 const API = 'http://www.omdbapi.com/?apikey=d551c863&';
 
-let top250 = []; // 3 years ago
-fetch("../top.json")
+fetch("../Jsons/top.json")
     .then((res) => res.json())
-    .then((data) => { return data.slice(0, 25); })
+    .then((data) => { return data.slice(0, 250); })
     .then(async (movieIds) => {
         for (let id of movieIds) {
             const movie_data = await fetch(`${API}i=${id}`).then(res => res.json());
@@ -47,13 +46,16 @@ function addMovie(movie_data) {
                 <div class="movie-rating">
                     <span class="star star1">★</span>
                     <span class="star star2">★</span>
-                    <span class="star star3">★</span>
+                    <span class="star star3">★</span>  
                     <span class="star star4">★</span>
                     <span class="star star5">★</span>            
                 </div>
             </div>
     `
     addRating(movie, movie_data);
+    movie.addEventListener("click", () => {
+        window.location.href = `movie.html?title=${movie_data.Title}`;
+    });
     movie_list.appendChild(movie);
 }
 
@@ -77,7 +79,7 @@ search_btn.addEventListener("click", () => {
 
     fetch(`${API}s=${search_value}${type == "all" ? "" : "&type=" + type}`)
     .then((res) => res.json())
-        .then((data) => data.Search.forEach(async (movie_info) => {
+        .then((data) => data.Search.forEach(async (movie_info) => { // Map, promise.all
             const movie_data = await fetch(`${API}i=${movie_info.imdbID}`).then(res => res.json());
             addMovie(movie_data);
         }))

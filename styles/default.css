@@ -1,0 +1,32 @@
+:root {
+    --background-color: #212121;
+    --wrapper-color: #2b2b2b;
+    --font-color: #cfcfcf;
+    --hover-font-color: #8af2e4;
+    --border-color: #363636;
+    --shadow-color:#242424;
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+    font-size: 16px;
+    box-sizing: border-box;
+    font-family: "Ubuntu", serif;
+    color: var(--font-color);
+}
+
+body {
+    background-color: var(--background-color);
+    height: 100vh;
+    overflow-y: hidden;
+    
+}
+
+.container {
+    background-color: var(--wrapper-color);
+    border-radius: 1rem;
+    margin: 1rem;
+
+    box-shadow: 1px 2px 3px var(--shadow-color);
+}
