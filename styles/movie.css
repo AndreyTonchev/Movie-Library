@@ -11,12 +11,59 @@ body {
     width: 90%;
     height: 90%;
     margin: 1% auto;
+
+    display: flex;
+    flex-direction: row;
 }
 
-.movie-poster {
+#movie-poster {
     width: 32%;
     height: 100%;
     object-fit: cover;
     aspect-ratio: 2/3;
     border-radius: 1rem 0 0 1rem;
+}
+
+/*                          4444444444444444444444444                        */
+
+.movie-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.movie-info {
+    width: 68%;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.movie-info h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.movie-info p {
+    margin-bottom: 0.5rem;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;
+}
+
+.button-container button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--hover-font-color);
+    color: var(--background-color);
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.button-container button:hover {
+    background-color: var(--font-color);
+    color: var(--wrapper-color);
 }
