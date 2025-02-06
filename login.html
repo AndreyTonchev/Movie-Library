@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/default.css">
+    <link rel="stylesheet" href="./styles/login.css">
+    <script type="module" src="../scripts/login.js" defer></script>
+    <title>Document</title>
+</head>
+    <body>
+        <div class="log-in-wrapper container">
+            <h1>Sign In</h1>
+
+            <form id="authenticator-form" action="#">
+                <input id="email-field" class="authhenticator-field" type="email" placeholder="Email">
+                <input id="username-field" class="authhenticator-field" type="text" placeholder="Username">
+                <input id="password-field" class="authhenticator-field" type="password" placeholder="Password">
+
+                <input id="log-in-btn" class="authenticator-btn" type="submit" value="Log in" >
+                <input id="sign-up-btn" class="authenticator-btn" type="submit" value="Sign up" >
+            </form>
+
+            <div class="info-bar">
+                <span class="info-span">You don't have an accout?</span>
+                <a class="sign-up-link" href="#">Sign up</a>
+                <a class="log-in-link" href="#" >Log In</a>
+            </div>
+
+            <div id="validation-container">
+                <span>This emails is in use</span>
+            </div>
+        </div>
+    </body>
+</html>

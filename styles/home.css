@@ -43,7 +43,7 @@
     transition: .5s;
 }
 
-.nav-btn-wrapper:hover, .profile-wrapper:hover {
+.nav-btn-wrapper:hover, .profile-wrapper:hover, .log-out-btn-wrapper:hover {
     cursor: pointer;
     transform: scale(1.1);
     transform-origin: left;
@@ -56,9 +56,23 @@
         fill: var(--hover-font-color);
     }
 
-    .nav-btn-span, .profile-btn-span {
+    .nav-btn-span, .profile-btn-span, .log-out-span {
         color: var(--hover-font-color);
     }
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: space-between;
+}
+
+.log-out-btn-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: .5s;
 }
 
 .default-svg{
@@ -73,6 +87,40 @@
     fill: var(--font-color);
 }
 
+/* MOVIE FORM */
+
+#add-movie-form {
+    display: none;
+    flex-direction: column;
+    max-height: 100%;
+    gap: 0.5rem;
+
+    input, textarea{
+        background: none;
+        border: 1px solid var(--font-color);
+        border-radius: 0.3rem;
+    }
+    
+    textarea {
+        resize: none;
+    }
+
+    button {
+        border: none;
+        background: none;
+    }
+
+    button:hover {
+        cursor: pointer;
+        color: var(--hover-font-color);
+    }
+
+    .add-movie-btn-wrapper {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+}
 
 /* RIGHT SIDE */
 
@@ -121,6 +169,10 @@
     width:100%;
 }
 
+.dropdown-type-option {
+    list-style-type: none;
+}
+
 .dropdown-type:hover {
     border-radius: 1rem 1rem 0 0;
     border-bottom: 0px;
@@ -143,24 +195,22 @@
 }
 
 .dropdown-type-option {
-    text-decoration: none;
     border: none;
     padding: 0.5rem 1.5rem;
     text-align: left;
 }
 
 .dropdown-type-option:hover {
+    cursor: pointer;
     color: var(--hover-font-color);
 }
 
 /* SORT DROPDOWN */
 
-
 .dropdown-sort{ 
     width: 16%;
     position: relative;
     align-content: center;
-    z-index: 10;
 }
 
 .dropdown-sort-btn {
@@ -365,26 +415,4 @@
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-}
-
-/* Movie Modal */
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid greenyellow;
-    width: 60%;
-    height: 70%;
-    border-radius: 1rem;
-}
-
-.modal-poster {
-    border: 1px solid greenyellow;
-    aspect-ratio: 2/3;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 1rem 0 0 1rem;
 }
