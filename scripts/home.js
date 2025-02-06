@@ -45,6 +45,10 @@ onAuthStateChanged(auth, (user) => {
         onValue(limitedQuery, (snapshot) => {
             snapshot.forEach((childSnapshot) => {
                 console.log(childSnapshot.val());
+                const data = childSnapshot.val();
+                console.log(data.Year);
+                addMovie(data);
+                
             });
         });
     }
@@ -87,18 +91,18 @@ function addRating(movie, rating) {
     }
 }
 
-function addMovie(imdbID, Title, Year, Rating, Genre, Poster) {    
+function addMovie(movie_data) {    
     const movie = document.createElement("div");
     movie.classList.add("movie-wrapper");
     movie.classList.add("container");
-    movie.setAttribute("movie-id", imdbID);
-    movie.setAttribute("movie-year", Year);
-    movie.setAttribute("movie-rating", Rating);
+    // movie.setAttribute("movie-id", imdbID);
+    movie.setAttribute("movie-year", movie_data.Year);
+    movie.setAttribute("movie-rating", movie_data.imdbRating);
     movie.innerHTML = `
-            <img class="movie-poster" src=${Poster} alt="No poster available">
+            <img class="movie-poster" src=${movie_data.Poster} alt="No poster available">
             <div class="movie-info">
-                <h2 class="movie-title">${Title}</h2>
-                <h3 class="movie-genre">${Genre}</h3>
+                <h2 class="movie-title">${movie_data.Title}</h2>
+                <h3 class="movie-genre">${movie_data.Genre}</h3>
                 <div class="movie-rating">
                     <span class="star star1">★</span>
                     <span class="star star2">★</span>
@@ -108,9 +112,9 @@ function addMovie(imdbID, Title, Year, Rating, Genre, Poster) {
                 </div>
             </div>
     `
-    addRating(movie, Rating);
+    addRating(movie, movie_data.imdbRating);
     movie.addEventListener("click", () => {
-        window.location.href = `movie.html?title=${Title}`;
+        window.location.href = `movie.html?title=${movie_data.Title}`;
     });
     movie_list.appendChild(movie);
 }
