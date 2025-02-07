@@ -14,17 +14,50 @@
             <img id="movie-poster" src="" alt="Movie-Banner">
             <div class="movie-content">
                 <div class="movie-info">
-                    <h1 id="movie-title">Movie Title</h1>
-                    <p id="movie-year">Year</p>
-                    <p id="movie-genre">Genre</p>
-                    <p id="movie-plot">Plot</p>
-                    <p id="movie-director">Director</p>
-                    <p id="movie-actors">Actors</p>
-                    <p id="movie-rating">Rating</p>
+                    <header>
+                        <h1 id="movie-title"></h1>
+
+                        <div class="button-container">
+                            <div id="watched-btn" class="btn">
+                                <svg class="default-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path class="stroke-svg" d="M8 6.00067L21 6.00139M8 12.0007L21 12.0015M8 18.0007L21 18.0015M3.5 6H3.51M3.5 12H3.51M3.5 18H3.51M4 6C4 6.27614 3.77614 6.5 3.5 6.5C3.22386 6.5 3 6.27614 3 6C3 5.72386 3.22386 5.5 3.5 5.5C3.77614 5.5 4 5.72386 4 6ZM4 12C4 12.2761 3.77614 12.5 3.5 12.5C3.22386 12.5 3 12.2761 3 12C3 11.7239 3.22386 11.5 3.5 11.5C3.77614 11.5 4 11.7239 4 12ZM4 18C4 18.2761 3.77614 18.5 3.5 18.5C3.22386 18.5 3 18.2761 3 18C3 17.7239 3.22386 17.5 3.5 17.5C3.77614 17.5 4 17.7239 4 18Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                            <div id="favourite-btn" class="btn">
+                                <svg class="default-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path class="stroke-svg" d="M15.7 4C18.87 4 21 6.98 21 9.76C21 15.39 12.16 20 12 20C11.84 20 3 15.39 3 9.76C3 6.98 5.13 4 8.3 4C10.12 4 11.31 4.91 12 5.71C12.69 4.91 13.88 4 15.7 4Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                            <div id="remove-btn" class="btn">   
+                                <svg class="fill-svg default-svg" fill="#000000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve"><polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490 489.292,457.678 277.331,245.004 489.292,32.337 "/></svg>
+                            </div>
+                        </div>
+
+                    </header>
+
+                    <div class="info-wrapper">
+                        <span class="info-type">Year:</span>
+                        <p id="movie-year" class="info-value">Year</p>
+                    </div>
+                    <div class="info-wrapper">
+                        <span class="info-type">Genre:</span>
+                        <p id="movie-genre" class="info-value">Genre</p>
+                    </div>
+                    <div class="info-wrapper">
+                        <span class="info-type">Plot:</span>
+                        <p id="movie-plot" class="info-value">Plot</p>
+                    </div>
+                    <div class="info-wrapper">
+                        <span class="info-type">Director:</span>
+                        <p id="movie-director" class="info-value">Director</p>
+                    </div>
+                    <div class="info-wrapper">
+                        <span class="info-type">Actors:</span>
+                        <p id="movie-actors" class="info-value">Actors</p>
+                    </div>
+                    <div class="info-wrapper">
+                        <span class="info-type">Rating:</span>
+                        <p id="movie-rating" class="info-value">Rating</p>
+                    </div>
                 </div>
-                <div class="button-container">
-                    <button id="watched-btn">Watched</button>
-                    <button id="like-btn">Like</button>
+                <div class="comments-wrapper">
+
                 </div>
             </div>
          </section>
