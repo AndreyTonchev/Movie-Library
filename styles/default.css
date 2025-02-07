@@ -5,6 +5,7 @@
     --hover-font-color: #8af2e4;
     --border-color: #363636;
     --shadow-color:#242424;
+    --inner-border-color:#505050;
 }
 
 * {
@@ -29,6 +30,11 @@ body {
     margin: 1rem;
 
     box-shadow: 1px 2px 3px var(--shadow-color);
+}
+
+img {
+    text-align: center;
+    line-height: 100px;
 }
 
 ::-webkit-scrollbar {

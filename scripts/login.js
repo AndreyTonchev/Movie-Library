@@ -19,6 +19,7 @@ const auth = getAuth();
 
 const user_name_field = document.getElementById("username-field");
 const password_field = document.getElementById("password-field");
+const confirm_password_filed = document.getElementById("confirm-password-field");
 
 const sign_up_btn = document.getElementById("sign-up-btn");
 const log_in_btn = document.getElementById("log-in-btn");
@@ -26,6 +27,7 @@ const log_in_btn = document.getElementById("log-in-btn");
 const sign_up_link = document.querySelector(".sign-up-link");
 const log_in_link = document.querySelector(".log-in-link");
 
+const operation_type = document.querySelector(".operation-type");
 const info_span = document.querySelector(".info-span");
 
 const showErrorMsg = (message) => {
@@ -35,9 +37,12 @@ const showErrorMsg = (message) => {
 
 sign_up_link.addEventListener("click", (e) => {
     e.preventDefault();
+
+    operation_type.textContent = "Sign up";
     log_in_btn.style.display = "none";
     sign_up_btn.style.display = "flex";
     user_name_field.style.display = "inline-block";
+    confirm_password_filed.style.display = "inline-block";
 
     log_in_link.style.display = "flex";
     sign_up_link.style.display = "none";
@@ -46,9 +51,12 @@ sign_up_link.addEventListener("click", (e) => {
 
 log_in_link.addEventListener("click", (e) => {
     e.preventDefault();
+
+    operation_type.textContent = "Log in";
     log_in_btn.style.display = "flex";
     sign_up_btn.style.display = "none";
     user_name_field.style.display = "none";
+    confirm_password_filed.style.display = "none";
 
     log_in_link.style.display = "none";
     sign_up_link.style.display = "flex";
@@ -63,6 +71,12 @@ sign_up_btn.addEventListener("click", async (e) => {
     const email = fields[0].value;
     const username = fields[1].value;
     const password = fields[2].value;
+    const confirm_password = fields[3].value;
+
+    if (password !== confirm_password) {
+        showErrorMsg("The passwords do not match");
+        return;
+    }
 
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {

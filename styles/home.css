@@ -19,7 +19,13 @@
     width: 15%;
     max-width: 30%;
 
-    height: 95vh; /* TEMP */
+    height: 100%;
+}
+
+.side-top {
+    display: flex;
+    flex-direction: column;
+    max-height: 88%;
 }
 
 .title {
@@ -62,6 +68,7 @@
 }
 
 .profile-info {
+    height: 12% ;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -87,40 +94,6 @@
     fill: var(--font-color);
 }
 
-/* MOVIE FORM */
-
-#add-movie-form {
-    display: none;
-    flex-direction: column;
-    max-height: 100%;
-    gap: 0.5rem;
-
-    input, textarea{
-        background: none;
-        border: 1px solid var(--font-color);
-        border-radius: 0.3rem;
-    }
-    
-    textarea {
-        resize: none;
-    }
-
-    button {
-        border: none;
-        background: none;
-    }
-
-    button:hover {
-        cursor: pointer;
-        color: var(--hover-font-color);
-    }
-
-    .add-movie-btn-wrapper {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-    }
-}
 
 /* RIGHT SIDE */
 
@@ -233,6 +206,7 @@
 }
 
 .dropdown-sort-content {
+    z-index: 10;
     display: none;
     position: absolute;
 
@@ -415,4 +389,54 @@
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+/* Add Movie Modal */
+
+
+#modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);  
+    display: none;
+    align-items: center;           
+    justify-content: center;        
+    z-index: 20;                     
+}
+
+#add-movie-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;   
+
+    background-color: var(--wrapper-color);
+    padding: 2rem;
+    border-radius: 1rem;
+
+
+    input, textarea{
+        background: none;
+        padding: 0.5rem;
+        border: 1px solid var(--inner-border-color);
+        border-radius: 1rem;
+    }
+    
+    button {
+        border: none;
+        background: none;
+    }
+
+    button:hover {
+        cursor: pointer;
+        color: var(--hover-font-color);
+    }
+
+    .add-movie-btn-wrapper {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
 }

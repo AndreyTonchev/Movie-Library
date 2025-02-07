@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/default.css">
     <link rel="stylesheet" href="./styles/home.css">
-    <script type="module" src="./scripts/home.js" defer ></script>
+    <script type="module" src="./scripts/home.js" ></script>
 
     
     <title>Absolute cinema</title>
@@ -36,35 +36,7 @@
                             <svg class="nav-svg default-svg" xmlns="http://www.w3.org/2000/svg" fill="none" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 45.402 45.402" xml:space="preserve"><g><path class="fill-svg" d="M41.267,18.557H26.832V4.134C26.832,1.851,24.99,0,22.707,0c-2.283,0-4.124,1.851-4.124,4.135v14.432H4.141 c-2.283,0-4.139,1.851-4.138,4.135c-0.001,1.141,0.46,2.187,1.207,2.934c0.748,0.749,1.78,1.222,2.92,1.222h14.453V41.27 c0,1.142,0.453,2.176,1.201,2.922c0.748,0.748,1.777,1.211,2.919,1.211c2.282,0,4.129-1.851,4.129-4.133V26.857h14.435 c2.283,0,4.134-1.867,4.133-4.15C45.399,20.425,43.548,18.557,41.267,18.557z" stroke="#212121" fill="none"/></g></svg>
                             <span class="nav-btn-span">Add Movie</span>
                         </div>
-
-                        <div id="movie-form" style=" margin-top: 20px;">
-                            <form id="add-movie-form">
-
-                                <label for="movie-name">Movie Name:</label>
-                                <input type="text" id="movie-name" name="movie-name" required>
                         
-                                <label for="year">Year:</label>
-                                <input type="number" id="movie-year" name="movie-year" required>
-                        
-                                <label for="length">Length (in minutes):</label>
-                                <input type="number" id="movie-length" name="movie-length" required>
-                        
-                                <label for="rating">Rating:</label>
-                                <input type="number" step="0.1" id="movie-rating" name="movie-rating" required>
-                        
-                                <label for="director">Director:</label>
-                                <input type="text" id="movie-director" name="movie-director" required>
-                        
-                                <label for="plot">Plot:</label>
-                                <textarea id="movie-plot" name="movie-plot" required></textarea>
-                                
-                                <div class="add-movie-btn-wrapper">
-                                    <button id="add-movie-submit-btn" type="submit">Submit Movie</button>
-                                    <button id="add-movie-cancel-btn" type="reset">Cancel</button>
-                                </div>
-
-                            </form>
-                        </div>
                     </nav>
                 </div>
 
@@ -154,16 +126,41 @@
                 <section class="main-section">
                     <section class="movies-wrapper"></section>
                 </section>
-
-                <div class="modal container" >
-                    <img class="modal-poster" src="https://m.media-amazon.com/images/M/MV5BMDAyY2FhYjctNDc5OS00MDNlLThiMGUtY2UxYWVkNGY2ZjljXkEyXkFqcGc@._V1_SX300.jpg" alt="img">
-                    <div class="movie-details">
-                        
-                    </div>
-                </div>
-                    
                 
             </section>
         </section>  
+
+        <div id="modal-overlay">
+            <form id="add-movie-form">
+
+                <label for="movie-name">Movie Name:</label>
+                <input type="text" id="movie-name" name="movie-name" required>
+        
+                <label for="movie-name">Genre:</label>
+                <input type="text" id="movie-genre" name="movie-genre" required>
+
+                <label for="year">Year:</label>
+                <input type="number" id="movie-year" name="movie-year" required>
+            
+                <label for="length">Length (in minutes):</label>
+                <input type="number" id="movie-length" name="movie-length" min="0" required>
+        
+                <label for="rating">Rating:</label>
+                <input type="number" step="0.1" id="movie-rating" name="movie-rating" min="0" max="10" required>
+        
+                <label for="director">Director:</label>
+                <input type="text" id="movie-director" name="movie-director" required>
+        
+                <label for="plot">Plot:</label>
+                <textarea id="movie-plot" name="movie-plot" required></textarea>
+                
+                <div class="add-movie-btn-wrapper">
+                    <button id="add-movie-submit-btn" type="submit">Submit Movie</button>
+                    <button id="add-movie-cancel-btn" type="reset">Cancel</button>
+                </div>
+
+            </form>
+        </div>
+
     </body>
 </html>

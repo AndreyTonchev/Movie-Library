@@ -10,12 +10,13 @@
 </head>
     <body>
         <div class="log-in-wrapper container">
-            <h1>Sign In</h1>
-
+            <h1 class="title">Absolute<br>Cinema</h1>
+            <span class="operation-type">Log In</span>
             <form id="authenticator-form" action="#">
                 <input id="email-field" class="authhenticator-field" type="email" placeholder="Email">
                 <input id="username-field" class="authhenticator-field" type="text" placeholder="Username">
                 <input id="password-field" class="authhenticator-field" type="password" placeholder="Password">
+                <input id="confirm-password-field" class="authhenticator-field" type="password" placeholder="Confirm Password">
 
                 <input id="log-in-btn" class="authenticator-btn" type="submit" value="Log in" >
                 <input id="sign-up-btn" class="authenticator-btn" type="submit" value="Sign up" >
@@ -27,9 +28,7 @@
                 <a class="log-in-link" href="#" >Log In</a>
             </div>
 
-            <div id="validation-container">
-                <span>This emails is in use</span>
-            </div>
+            <div id="validation-container"></div>
         </div>
     </body>
 </html>

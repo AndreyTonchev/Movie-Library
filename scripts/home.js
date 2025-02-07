@@ -31,7 +31,7 @@ onAuthStateChanged(auth, (user) => {
     if (user) { 
         console.log(user.displayName);
         loadPresetMovies(10);
-        // loadAddedMovies();
+        loadAddedMovies();
 
     } else {
         window.location.href = "./login.html";
@@ -40,48 +40,30 @@ onAuthStateChanged(auth, (user) => {
 
     function loadPresetMovies(count) {
         const reference = ref(db, 'Movies/PresetMovies');
-        const limitedQuery = query(reference, limitToFirst(count));
+        const limited_query = query(reference, limitToFirst(count));
 
-        onValue(limitedQuery, (snapshot) => {
-            snapshot.forEach((childSnapshot) => {
-                console.log(childSnapshot.val());
-                const data = childSnapshot.val();
-                console.log(data.Year);
-                addMovie(data);
-                
-            });
+        onValue(limited_query, (snapshot) => {
+            snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
         });
     }
 
-// TODO make it a list of movies in the json file
 
     function loadAddedMovies() {
-        const moviesRef = ref(db, 'AddedMovies');
+        const moviesRef = ref(db, 'Movies/AddedMovies');
         onValue(moviesRef, (snapshot) => {
-            const data = snapshot.val();
-            // console.log(data);
-            addMovie(
-                    unknown,
-                    data.name,
-                    data.year,
-                    data.rating,
-                    "undefined",
-                    "#"
-                );
-            
+            snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
         });
     }
 });
 
-
-
+    
 function addRating(movie, rating) {
     
     for (let i = 1; i <= 5 ; i++ ) {
         if (rating - 2 * i > 0) {
             movie.querySelector(`.star${i}`).classList.add("full-star");
         }
-        else if (rating - ((2 * i) - 1) > 0) {
+        else if (rating - ((2 * i) - 1) >= 0) {
             movie.querySelector(`.star${i}`).classList.add("half-star");
             return;
         }
@@ -95,7 +77,6 @@ function addMovie(movie_data) {
     const movie = document.createElement("div");
     movie.classList.add("movie-wrapper");
     movie.classList.add("container");
-    // movie.setAttribute("movie-id", imdbID);
     movie.setAttribute("movie-year", movie_data.Year);
     movie.setAttribute("movie-rating", movie_data.imdbRating);
     movie.innerHTML = `
@@ -151,6 +132,8 @@ search_btn.addEventListener("click", () => {
 
             data.Search.forEach(async (movie_info) => { // Map, promise.all
             const movie_data = await fetch(`${API}i=${movie_info.imdbID}`).then(res => res.json());
+            console.log(movie_data);
+            
             addMovie(movie_data);
             });
         })
@@ -208,31 +191,40 @@ document.getElementById("favourites-btn").addEventListener("click", () => {
 
 // ###################################    ADD MOVIE    #####################################################
 
+const modal = document.getElementById("modal-overlay");
 
 document.getElementById("add-movie-btn").addEventListener("click", () => {
-    form.style.display = "flex";
-    document.getElementById("add-movie-cancel-btn").addEventListener("click", () => form.style.display = "none");
+    modal.style.display = "flex";
+    document.getElementById("add-movie-cancel-btn").addEventListener("click", () => modal.style.display = "none");
 });
 
-document.getElementById('movie-form').addEventListener('submit', function(event) {
+document.getElementById('add-movie-form').addEventListener('submit', function(event) {
+    const user = auth.currentUser;
+    console.log(user);
+    
+
     event.preventDefault();
     const movie_name = document.getElementById('movie-name').value;
     const movie_data = {
-        year: document.getElementById('movie-year').value,
-        length: document.getElementById('movie-length').value,
-        rating: document.getElementById('movie-rating').value,
-        director: document.getElementById('movie-director').value,
-        plot: document.getElementById('movie-plot').value
+        Title: document.getElementById('movie-name').value,
+        Genre: document.getElementById('movie-genre').value,
+        Year: document.getElementById('movie-year').value,
+        Length: document.getElementById('movie-length').value,
+        imdbRating: document.getElementById('movie-rating').value,
+        Director: document.getElementById('movie-director').value,
+        Plot: document.getElementById('movie-plot').value,
+        isAdded: true,
+        addedBy: user.displayName
     };
     
     saveMovieData(movie_data, movie_name);
+    
 });
 
 function saveMovieData(movieData) {
-
-    const refrence = ref(db, 'AddedMovies/' + movieData.name);
-    // const newPostRef = push(refrence);
-    set(refrence, movieData);
+    const refrence = ref(db, 'Movies/AddedMovies/');
+    const newPostRef = push(refrence);
+    set(newPostRef, movieData);
 }
 
 document.querySelector(".log-out-btn-wrapper").addEventListener("click", e=> {

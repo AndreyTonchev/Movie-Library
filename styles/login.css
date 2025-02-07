@@ -8,28 +8,66 @@ body {
 }
 
 .log-in-wrapper {
-    width: 35%;
+    width: clamp(300px, 50%, 500px);
     height: 90%;
     margin: 1% auto;
 
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 2rem;
 
     align-items: center;
     gap: 2rem;
+}
+
+.title {
+    font-size: 2rem;
+    text-align: center;
+}
+
+
+
+#sign-up-button, #username-field, #sign-up-btn, #confirm-password-field, .log-in-link {
+    display: none;
+}
+
+#validation-container {
+    display: none;
 }
 
 #authenticator-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-}
+    width: 100%;
 
-#sign-up-button, #username-field, #sign-up-btn, .log-in-link {
-    display: none;
+    input {
+        background: none;
+        border: 1px solid var(--inner-border-color);
+        border-radius: 1rem;
+        padding:1rem;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    .authenticator-btn {
+        font-size: 1.2rem;
+    
+    }
+
+    .authenticator-btn:hover {
+        color: var(--hover-font-color);
+        cursor: pointer;
+    }
+
+}   
+
+.sign-up-link:hover, .log-in-link:hover {
+    color: var(--hover-font-color);
 }
 
 #validation-container {
-    display: none;
+    color: Crimson;
 }
