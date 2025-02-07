@@ -32,9 +32,7 @@ const page = params.get("page");
 
 
 onAuthStateChanged(auth, (user) => {
-    if (user) { 
-        console.log(page);
-        
+    if (user) {      
         if(page === "watched") {
             loadWatchedMovies(user);
         }
@@ -42,7 +40,7 @@ onAuthStateChanged(auth, (user) => {
             loadFavouriteMovies(user);
         }
         else {
-            loadPresetMovies(10);
+            loadPresetMovies(25);
             loadAddedMovies();
         }
 
@@ -245,7 +243,7 @@ document.getElementById('add-movie-form').addEventListener('submit', function(ev
         isAdded: true,
         addedBy: user.displayName
     };
-    
+
     saveMovieData(movie_data);
     modal.style.display = "none";
 });

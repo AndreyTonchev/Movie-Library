@@ -115,49 +115,79 @@ function removeAddedMovie(title) {
 }
 
 
+// We are saving the name of the user who watched/liked the movie in the movie's json, bcs when we delete a movie we need to remove that movie from
+// the list of all the user that have watched/liked it. Another way is to go trough every user and check but if we have a lot of user thats going to be very slow
+
+
 async function setWatchedBtn(movie_data) {
     const user = auth.currentUser;
-    const path = 'Users/' + `${user.displayName}/Watched/` + movie_data.Title;
+    const user_path = 'Users/' + `${user.displayName}/Watched/` + movie_data.Title;
 
-    const res = await exist(path);
+    const segment = movie_data.isAdded === true ? "AddedMovies" : "PresetMovies";
+    const movie_path = "Movies/" + segment + "/" + movie_data.Title + "/Watched/" + user.displayName;
+
+    const res = await exist(user_path);
 
     if (res === true) {
         watched_btn.setAttribute("selected","");
     }
 
     watched_btn.addEventListener('click',async () => {
-        const watched_ref = ref(db, path);
-        if (await exist(path)) {
-            set(watched_ref, null);
+        const user_watched_ref = ref(db, user_path);
+        const movie_watched_ref = ref(db, movie_path);
+
+        if (await exist(user_path)) {
+            // Remove movie form user list
+            set(user_watched_ref, null);
             watched_btn.removeAttribute("selected");
 
+             // Remove user from movie list
+             set(movie_watched_ref, null)
+
         } else {
-            set(watched_ref, movie_data);
+            // Add movie to user list
+            set(user_watched_ref, movie_data);
             watched_btn.setAttribute("selected","");
+
+            // Add user to movie list
+            set(movie_watched_ref, user.displayName);
         }
     });
 }
 
 async function setFavouriteBtn(movie_data) {
     const user = auth.currentUser;
-    const path = 'Users/' + `${user.displayName}/Favourite/` + movie_data.Title;
+    const user_path = 'Users/' + `${user.displayName}/Favourite/` + movie_data.Title;
 
-    const res = await exist(path);
+    const segment = movie_data.isAdded === true ? "AddedMovies" : "PresetMovies";
+    const movie_path = "Movies/" + segment + "/" + movie_data.Title + "/Favourite/" + user.displayName;
+     
+
+    const res = await exist(user_path);
 
     if (res === true) {
         fav_btn.setAttribute("selected","");
     }
 
-
     fav_btn.addEventListener('click',async () => {
-        const favourite_ref = ref(db, path);
-        if (await exist(path)) {
-            set(favourite_ref, null);
+        const user_favourite_ref = ref(db, user_path);
+        const movie_favourite_ref = ref(db, movie_path);
+
+        if (await exist(user_path)) {
+            // Remove movie form user list
+            set(user_favourite_ref, null);
             fav_btn.removeAttribute("selected");
 
+            // Remove user from movie list
+            set(movie_favourite_ref, null)
+
         } else {
-            set(favourite_ref, movie_data);
+            // Add movie to user list
+            set(user_favourite_ref, movie_data);
             fav_btn.setAttribute("selected","");
+
+            // Add user to movie list
+            set(movie_favourite_ref, user.displayName);
         }
     });
 }
