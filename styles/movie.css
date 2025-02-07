@@ -17,25 +17,54 @@ body {
 }
 
 #movie-poster {
-    width: 32%;
+    width: fit-content;
     height: 100%;
     object-fit: cover;
     aspect-ratio: 2/3;
     border-radius: 1rem 0 0 1rem;
 }
 
-/*                          4444444444444444444444444                        */
+/*                                                */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+#movie-title {
+    text-align: center;
+}
 
 .movie-content {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+
+    width: 100%;
+    max-width: 100%;
+
+    height: 50%;
 }
 
 .movie-info {
-    width: 68%;
     padding: 1rem;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: start;
+}
+
+.info-wrapper {
+    display: flex;
+    padding: 0.5rem;
+    align-content: center;
+}
+
+.info-type {
+    min-width: 10%;
+    align-content: center;
 }
 
 .movie-info h1 {
@@ -43,27 +72,55 @@ body {
     margin-bottom: 1rem;
 }
 
-.movie-info p {
+/* .movie-info p {
     margin-bottom: 0.5rem;
-}
+} */
+
+
+/* #############################   BUTTONS   ##################################### */
 
 .button-container {
     display: flex;
     justify-content: space-around;
+    gap:1rem;
     padding: 1rem;
 }
 
-.button-container button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 0.5rem;
-    background-color: var(--hover-font-color);
-    color: var(--background-color);
-    cursor: pointer;
-    font-size: 1rem;
+.btn {
+    width:2rem;
+    height:2rem;
 }
 
-.button-container button:hover {
-    background-color: var(--font-color);
-    color: var(--wrapper-color);
+.btn:hover {
+    cursor: pointer;
+}
+
+#remove-btn {
+    display: none;
+}
+
+#remove-btn:hover .fill-svg {
+    fill: red;
+}
+
+#watched-btn:hover .stroke-svg, #watched-btn[selected] .stroke-svg {
+    stroke: gold;
+}
+
+#favourite-btn:hover .stroke-svg, #favourite-btn[selected] .stroke-svg {
+    stroke: red;
+    fill: red;
+}
+
+path, svg {
+    width: 100%;
+}
+/* #############################   COMMENTS   ##################################### */
+
+.comment-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
 }

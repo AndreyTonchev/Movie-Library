@@ -1,6 +1,6 @@
 import { getAuth, signOut, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { push, getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+import { get, getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 
 const firebase_config = {
     apiKey: "AIzaSyC43WNubF79aEGwdOR1TTE1q04dLLnbx6I",
@@ -17,13 +17,15 @@ const app = initializeApp(firebase_config);
 const auth = getAuth();
 const db = getDatabase();
 
-// ########################################################################################
-// TODO: CHECK IF MOVIE IS ADDED AND IF SO, ADD DELETE MOVIE BUTTON
 
 const API = "http://www.omdbapi.com/?apikey=d551c863&";
 let url = new URL(window.location.href);
 let params = new URLSearchParams(url.search);
+
 const title = params.get("title");
+const year = params.get("year");
+const fav_btn = document.getElementById('favourite-btn');
+const watched_btn = document.getElementById('watched-btn');
 
 
 onAuthStateChanged(auth, (user) => {
@@ -35,45 +37,139 @@ onAuthStateChanged(auth, (user) => {
         window.location.href = "./login.html";
         alert("Please login to view this page");
     }
-
-    function loadMovie(title) {
-        fetch(`${API}t=${title}`)
-        .then((res) => res.json())
-        .then((data) => {
-            console.log(data)
-            document.title = data.Title;
-            document.getElementById("movie-poster").setAttribute("src", `${data.Poster}`);
-            document.getElementById('movie-title').textContent = data.Title;
-            document.getElementById('movie-year').textContent = `Year: ${data.Year}`;
-            document.getElementById('movie-genre').textContent = `Genre: ${data.Genre}`;
-            document.getElementById('movie-plot').textContent = `Plot: ${data.Plot}`;
-            document.getElementById('movie-director').textContent = `Director: ${data.Director}`;
-            document.getElementById('movie-actors').textContent = `Actors: ${data.Actors}`;
-            document.getElementById('movie-rating').textContent = `Rating: ${data.imdbRating}`;
-
-            const movie_data = {
-                Title: data.Title,
-                Year: data.Year,
-                Genre: data.Genre,
-                Plot: data.Plot,
-                Director: data.Director,
-                Actors: data.Actors,
-                Rating: data.imdbRating,
-                Poster: data.Poster,
-            }
-            
-            document.getElementById('watched-btn').addEventListener('click', () => {
-                const refrence = ref(db, 'Users/' + `${user.displayName}/`+ "Watched/" + title);
-                set(refrence, movie_data);
-            });
-
-            document.getElementById('like-btn').addEventListener('click', () => {
-                const refrence = ref(db, 'Users/' + `${user.displayName}/`+ "Favourite/" + title);
-                set(refrence, movie_data);
-            
-            });
-        })
-        .catch((err) => console.error(err));
-    }
 });
+
+
+async function loadMovie(title) {
+    const user = auth.currentUser;
+    try {
+        const res = await fetch(`${API}t=${title}&y=${year}`);
+        const data = await res.json();
+
+        const movie_data = data.Response === "True" ? getDataFromAPI(data) : await getDataFromDB(title);
+
+        if (movie_data.isAdded && movie_data.addedBy === user.displayName) {
+            const remove_btn = document.getElementById('remove-btn');
+            remove_btn.style.display = "block";
+            remove_btn.addEventListener("click", () => removeAddedMovie(title));
+        }
+
+        if (movie_data) {
+            setValues(movie_data);  
+        } else {
+            alert("Movie data not available.");
+        }
+
+        setWatchedBtn(movie_data);
+        setFavouriteBtn(movie_data);
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function getDataFromAPI(data) {
+    const movie_data = {
+        Title: data.Title,
+        Year: data.Year,
+        Genre: data.Genre,
+        Plot: data.Plot,
+        Director: data.Director,
+        Actors: data.Actors,
+        imdbRating: data.imdbRating,
+        Poster: data.Poster,
+    }
+
+    return movie_data;
+}
+
+async function getDataFromDB(title) {
+    const refrence = ref(db, 'Movies/AddedMovies/' + title);
+    const snapshot = await get(refrence);
+
+        if (snapshot.exists()) {
+            console.log(snapshot.val());
+            return snapshot.val();
+        }
+        else {
+            alert("Movie not found");
+        }
+}
+
+function setValues(data) {
+    document.title = data.Title;
+    document.getElementById("movie-poster").setAttribute("src", data.Poster);
+    document.getElementById('movie-title').textContent = data.Title ?? "N/a";   
+    document.getElementById('movie-year').textContent = data.Year ?? "N/a";
+    document.getElementById('movie-genre').textContent = data.Genre ?? "N/a";
+    document.getElementById('movie-plot').textContent = data.Plot ?? "N/a";
+    document.getElementById('movie-director').textContent = data.Director ?? "N/a";
+    document.getElementById('movie-actors').textContent = data.Actors ?? "N/a";
+    document.getElementById('movie-rating').textContent = data.imdbRating ?? "N/a";
+}
+
+function removeAddedMovie(title) {
+    const refrence = ref(db, 'Movies/AddedMovies/' + title);
+    set(refrence, null);
+    window.location.href = "./index.html";
+}
+
+
+async function setWatchedBtn(movie_data) {
+    const user = auth.currentUser;
+    const path = 'Users/' + `${user.displayName}/Watched/` + movie_data.Title;
+
+    const res = await exist(path);
+
+    if (res === true) {
+        watched_btn.setAttribute("selected","");
+    }
+
+    watched_btn.addEventListener('click',async () => {
+        const watched_ref = ref(db, path);
+        if (await exist(path)) {
+            set(watched_ref, null);
+            watched_btn.removeAttribute("selected");
+
+        } else {
+            set(watched_ref, movie_data);
+            watched_btn.setAttribute("selected","");
+        }
+    });
+}
+
+async function setFavouriteBtn(movie_data) {
+    const user = auth.currentUser;
+    const path = 'Users/' + `${user.displayName}/Favourite/` + movie_data.Title;
+
+    const res = await exist(path);
+
+    if (res === true) {
+        fav_btn.setAttribute("selected","");
+    }
+
+
+    fav_btn.addEventListener('click',async () => {
+        const favourite_ref = ref(db, path);
+        if (await exist(path)) {
+            set(favourite_ref, null);
+            fav_btn.removeAttribute("selected");
+
+        } else {
+            set(favourite_ref, movie_data);
+            fav_btn.setAttribute("selected","");
+        }
+    });
+}
+
+async function exist(path) {
+    const reference = ref(db, path);
+    try {
+        const snapshot = await get(reference);      
+        return snapshot.exists();                    
+    } catch (error) {
+        console.error("Error checking existence:", error);
+        return false;                                
+    }
+}
 

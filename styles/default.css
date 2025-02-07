@@ -49,3 +49,15 @@ background-color: var(--background-color);
 height: 3px;
 background-color: var(--wrapper-color);
 }
+
+.default-svg{
+    width: 1.5rem;
+}
+
+.stroke-svg {
+    stroke: var(--font-color)
+}
+
+.fill-svg {
+    fill: var(--font-color);
+}

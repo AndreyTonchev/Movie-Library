@@ -1,6 +1,6 @@
 import { getAuth, signOut, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { query, limitToFirst, onValue, push, getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+import { get, query, limitToFirst, onValue, push, getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 
 const firebase_config = {
     apiKey: "AIzaSyC43WNubF79aEGwdOR1TTE1q04dLLnbx6I",
@@ -25,38 +25,66 @@ const search_btn = document.querySelector(".search-btn");
 const form = document.getElementById("add-movie-form");
 const API = 'http://www.omdbapi.com/?apikey=d551c863&';
 
+let url = new URL(window.location.href);
+let params = new URLSearchParams(url.search);
+const page = params.get("page");
+
 
 
 onAuthStateChanged(auth, (user) => {
     if (user) { 
-        console.log(user.displayName);
-        loadPresetMovies(10);
-        loadAddedMovies();
+        console.log(page);
+        
+        if(page === "watched") {
+            loadWatchedMovies(user);
+        }
+        else if(page === "favourites") {
+            loadFavouriteMovies(user);
+        }
+        else {
+            loadPresetMovies(10);
+            loadAddedMovies();
+        }
+
 
     } else {
         window.location.href = "./login.html";
         alert("Please login to view this page");
     }
 
-    function loadPresetMovies(count) {
-        const reference = ref(db, 'Movies/PresetMovies');
-        const limited_query = query(reference, limitToFirst(count));
-
-        onValue(limited_query, (snapshot) => {
-            snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
-        });
-    }
-
-
-    function loadAddedMovies() {
-        const moviesRef = ref(db, 'Movies/AddedMovies');
-        onValue(moviesRef, (snapshot) => {
-            snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
-        });
-    }
 });
 
+
+function loadPresetMovies(count) {
+    const reference = ref(db, 'Movies/PresetMovies');
+    const limited_query = query(reference, limitToFirst(count));
+
+    onValue(limited_query, (snapshot) => {
+        snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
+    });
+}
+
+function loadAddedMovies() {
+    const movies_ref = ref(db, 'Movies/AddedMovies');
+    onValue(movies_ref, (snapshot) => {
+        snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
+    });
+}
     
+function loadWatchedMovies(user) {
+    const movies_ref = ref(db, 'Users/' + `${user.displayName}/` + "Watched");
+    onValue(movies_ref, (snapshot) => {
+        snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
+    });
+}
+
+function loadFavouriteMovies(user) {
+    const movies_ref = ref(db, 'Users/' + `${user.displayName}/` + "Favourite");
+    onValue(movies_ref, (snapshot) => {
+        snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
+    });
+}
+
 function addRating(movie, rating) {
     
     for (let i = 1; i <= 5 ; i++ ) {
@@ -74,6 +102,7 @@ function addRating(movie, rating) {
 }
 
 function addMovie(movie_data) {    
+    
     const movie = document.createElement("div");
     movie.classList.add("movie-wrapper");
     movie.classList.add("container");
@@ -93,9 +122,10 @@ function addMovie(movie_data) {
                 </div>
             </div>
     `
+    
     addRating(movie, movie_data.imdbRating);
     movie.addEventListener("click", () => {
-        window.location.href = `movie.html?title=${movie_data.Title}`;
+        window.location.href = `movie.html?title=${movie_data.Title}&year=${movie_data.Year}`;
     });
     movie_list.appendChild(movie);
 }
@@ -191,6 +221,7 @@ document.getElementById("favourites-btn").addEventListener("click", () => {
 
 // ###################################    ADD MOVIE    #####################################################
 
+
 const modal = document.getElementById("modal-overlay");
 
 document.getElementById("add-movie-btn").addEventListener("click", () => {
@@ -200,11 +231,8 @@ document.getElementById("add-movie-btn").addEventListener("click", () => {
 
 document.getElementById('add-movie-form').addEventListener('submit', function(event) {
     const user = auth.currentUser;
-    console.log(user);
-    
 
     event.preventDefault();
-    const movie_name = document.getElementById('movie-name').value;
     const movie_data = {
         Title: document.getElementById('movie-name').value,
         Genre: document.getElementById('movie-genre').value,
@@ -213,18 +241,24 @@ document.getElementById('add-movie-form').addEventListener('submit', function(ev
         imdbRating: document.getElementById('movie-rating').value,
         Director: document.getElementById('movie-director').value,
         Plot: document.getElementById('movie-plot').value,
+        Poster: "../media/EmptyBanner.jpg",
         isAdded: true,
         addedBy: user.displayName
     };
     
-    saveMovieData(movie_data, movie_name);
-    
+    saveMovieData(movie_data);
+    modal.style.display = "none";
 });
 
-function saveMovieData(movieData) {
-    const refrence = ref(db, 'Movies/AddedMovies/');
-    const newPostRef = push(refrence);
-    set(newPostRef, movieData);
+function saveMovieData(movie_data) {
+    const refrence = ref(db, 'Movies/AddedMovies/' + movie_data.Title);
+    get(refrence).then((snapshot) => {
+        if (snapshot.exists()) {
+            alert("Movie with that name Already exist");
+        } else {
+            set(refrence, movie_data);
+        }
+    });
 }
 
 document.querySelector(".log-out-btn-wrapper").addEventListener("click", e=> {
