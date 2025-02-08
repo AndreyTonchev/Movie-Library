@@ -37,45 +37,6 @@ header {
     text-align: center;
 }
 
-.movie-content {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-
-    width: 100%;
-    max-width: 100%;
-
-    height: 50%;
-}
-
-.movie-info {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: start;
-}
-
-.info-wrapper {
-    display: flex;
-    padding: 0.5rem;
-    align-content: center;
-}
-
-.info-type {
-    min-width: 10%;
-    align-content: center;
-}
-
-.movie-info h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-/* .movie-info p {
-    margin-bottom: 0.5rem;
-} */
-
 
 /* #############################   BUTTONS   ##################################### */
 
@@ -115,12 +76,58 @@ header {
 path, svg {
     width: 100%;
 }
-/* #############################   COMMENTS   ##################################### */
 
-.comment-wrapper {
+/* #############################   CONTENT   ##################################### */
+
+.movie-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    padding: 2rem;
+
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+}
+
+.movie-info {
+    
     display: flex;
     flex-direction: column;
-    padding: 1rem;
     width: 100%;
-    height: 100%;
+    justify-content: start;
+    gap:1rem;
+}
+
+.info-wrapper {
+    display: flex;
+
+    align-content: center;
+}
+
+.info-type {
+    min-width: 10%;
+    align-content: center;
+}
+
+.movie-info h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+
+/* #############################   COMMENTS   ##################################### */
+
+.comments-header {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.comments-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    height: 50%;
 }

@@ -2,6 +2,8 @@ import { getAuth, signOut, onAuthStateChanged, createUserWithEmailAndPassword, u
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { get, getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 
+const can_comment = false;
+
 const firebase_config = {
     apiKey: "AIzaSyC43WNubF79aEGwdOR1TTE1q04dLLnbx6I",
     authDomain: "movie-library-459ac.firebaseapp.com",
@@ -13,6 +15,7 @@ const firebase_config = {
     databaseURL: "https://movie-library-459ac-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
+
 const app = initializeApp(firebase_config);
 const auth = getAuth();
 const db = getDatabase();
@@ -21,6 +24,7 @@ const db = getDatabase();
 const API = "http://www.omdbapi.com/?apikey=d551c863&";
 let url = new URL(window.location.href);
 let params = new URLSearchParams(url.search);
+
 
 const title = params.get("title");
 const year = params.get("year");
@@ -68,6 +72,7 @@ async function loadMovie(title) {
     }
 }
 
+
 function getDataFromAPI(data) {
     const movie_data = {
         Title: data.Title,
@@ -83,6 +88,7 @@ function getDataFromAPI(data) {
     return movie_data;
 }
 
+
 async function getDataFromDB(title) {
     const refrence = ref(db, 'Movies/AddedMovies/' + title);
     const snapshot = await get(refrence);
@@ -96,6 +102,7 @@ async function getDataFromDB(title) {
         }
 }
 
+
 function setValues(data) {
     document.title = data.Title;
     document.getElementById("movie-poster").setAttribute("src", data.Poster);
@@ -107,6 +114,7 @@ function setValues(data) {
     document.getElementById('movie-actors').textContent = data.Actors ?? "N/a";
     document.getElementById('movie-rating').textContent = data.imdbRating ?? "N/a";
 }
+
 
 function removeAddedMovie(title) {
     const refrence = ref(db, 'Movies/AddedMovies/' + title);
@@ -155,6 +163,7 @@ async function setWatchedBtn(movie_data) {
     });
 }
 
+
 async function setFavouriteBtn(movie_data) {
     const user = auth.currentUser;
     const user_path = 'Users/' + `${user.displayName}/Favourite/` + movie_data.Title;
@@ -167,6 +176,7 @@ async function setFavouriteBtn(movie_data) {
 
     if (res === true) {
         fav_btn.setAttribute("selected","");
+        can_comment = true;
     }
 
     fav_btn.addEventListener('click',async () => {
@@ -177,6 +187,7 @@ async function setFavouriteBtn(movie_data) {
             // Remove movie form user list
             set(user_favourite_ref, null);
             fav_btn.removeAttribute("selected");
+            can_comment = false;
 
             // Remove user from movie list
             set(movie_favourite_ref, null)
@@ -185,12 +196,14 @@ async function setFavouriteBtn(movie_data) {
             // Add movie to user list
             set(user_favourite_ref, movie_data);
             fav_btn.setAttribute("selected","");
+            can_comment = true;
 
             // Add user to movie list
             set(movie_favourite_ref, user.displayName);
         }
     });
 }
+
 
 async function exist(path) {
     const reference = ref(db, path);
