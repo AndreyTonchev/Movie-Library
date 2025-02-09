@@ -14,7 +14,6 @@ const firebase_config = {
 };
 
 const app = initializeApp(firebase_config);
-const analytics = getAnalytics(app);
 const auth = getAuth();
 
 const user_name_field = document.getElementById("username-field");

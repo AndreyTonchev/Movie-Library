@@ -65,6 +65,7 @@ async function loadMovie(title) {
 
     } catch (err) {
         console.error(err);
+        window.location.href = "./index.html";
     }
 }
 
@@ -95,6 +96,7 @@ async function getDataFromDB(title) {
         }
         else {
             alert("Movie not found");
+            window.location.href = "./index.html";
         }
 }
 
@@ -112,41 +114,47 @@ function setValues(data) {
 }
 
 
-function removeAddedMovie(title) {
+async function removeAddedMovie(title) {
     const refrence = ref(db, 'Movies/AddedMovies/' + title);
 
 
     // Clear the favorite/Watched data so the movie does not apear in the Favourite/Watched pages
 
-    clearFavoriteData(title);
-    clearWatchedData(title);
+    await clearFavoriteData(title);
+    await clearWatchedData(title);
 
-    set(refrence, null);
+    await set(refrence, null);
     window.location.href = "./index.html";
 
 
-    function clearFavoriteData(title) {
+
+
+    async function clearFavoriteData(title) {
         const reference = ref(db, 'Movies/AddedMovies/' + title + "/Favourite");
-        console.log(reference);
-        onValue(reference, (snapshot) => {
-            snapshot.forEach((child_snapshot) => {
-                console.log(child_snapshot);
-                const user_favourite_ref = ref(db, `Users/${child_snapshot.val()}/Favourite/${title}`);
-                set(user_favourite_ref, null);
-            })
-        })
+
+        const snapshot = await get(reference);
+        const promises = [];
+
+        snapshot.forEach((child_snapshot) => {       
+            const user_favourite_ref = ref(db, `Users/${child_snapshot.val()}/Favourite/${title}`);
+            promises.push(set(user_favourite_ref, null));
+        });   
+
+        await Promise.all(promises);
     }
 
-    function clearWatchedData(title) {
-        const reference = ref(db, 'Movies/AddedMovies/' + title + "/Watched");
-        console.log(reference);
-        onValue(reference, (snapshot) => {
-            snapshot.forEach((child_snapshot) => {
-                console.log(child_snapshot);
-                const user_watched_ref = ref(db, `Users/${child_snapshot.val()}/Watched/${title}`);
-                set(user_watched_ref, null);
-            })
-        })
+    async function clearWatchedData(title) {
+        const reference = await ref(db, 'Movies/AddedMovies/' + title + "/Watched");
+
+        const snapshot = await get(reference);
+        const promises = [];
+
+        snapshot.forEach((child_snapshot) => {
+            const user_watched_ref = ref(db, `Users/${child_snapshot.val()}/Watched/${title}`);
+            promises.push(set(user_watched_ref, null));
+        });
+
+        await Promise.all(promises);
     }
 
 }
@@ -262,7 +270,6 @@ async function setCommentBtn(movie_data) {
         const new_comment_ref = push(comment_ref);
         set(new_comment_ref, comment_data);
 
-        addComment(comment_data);
         modal.style.display = "none";
     }); 
 }
@@ -292,6 +299,7 @@ function loadComments(movie_data) {
 
     const comments_ref = ref(db, path);
     onValue(comments_ref, (snapshot) => {
+        document.querySelector(".comments-list").innerHTML = "";
         snapshot.forEach((child_snapshot) => addComment(child_snapshot.val()));
     });
 }
@@ -299,9 +307,11 @@ function loadComments(movie_data) {
 
 function addComment(comment_data) {
     const comment = document.createElement("div");
-    comment.classList.add("comment")
+    comment.classList.add("comment");
+
     const comment_line = document.createElement("hr");
     comment_line.classList.add("comment-line");
+
     comment.innerHTML = `
         <div class="comment-info">
             <span class="comment-author">${comment_data.User}</span>
@@ -315,6 +325,7 @@ function addComment(comment_data) {
     comments_list.appendChild(comment_line);
 }
 
+// ###################################    UTILS    #####################################################
 
 async function exist(path) {
     const reference = ref(db, path);

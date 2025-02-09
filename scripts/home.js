@@ -41,10 +41,9 @@ onAuthStateChanged(auth, (user) => {
             loadFavouriteMovies(user);
         }
         else {
-            loadPresetMovies(25);
+            loadPresetMovies(50);
             loadAddedMovies();
         }
-
 
     } else {
         window.location.href = "./login.html";

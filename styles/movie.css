@@ -117,7 +117,7 @@ path, svg {
 
 .info-wrapper {
     display: flex;
-
+    gap: 1rem;
     align-content: center;
 }
 
@@ -131,13 +131,7 @@ path, svg {
     margin-bottom: 1rem;
 }
 
-
-.line {
-    margin: 1rem;
-}
-
 /* #############################   COMMENTS   ##################################### */
-
 
 .comments-wrapper {
     flex: 1;
@@ -217,7 +211,7 @@ path, svg {
     border-radius: 1rem;
 
 
-    #comment-form{
+    #comment-text {
         background: none;
         padding: 0.5rem;
         border: 1px solid var(--inner-border-color);
