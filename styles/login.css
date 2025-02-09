@@ -26,7 +26,6 @@ body {
 }
 
 
-
 #sign-up-button, #username-field, #sign-up-btn, #confirm-password-field, .log-in-link {
     display: none;
 }
@@ -46,9 +45,6 @@ body {
         border: 1px solid var(--inner-border-color);
         border-radius: 1rem;
         padding:1rem;
-    }
-
-    input {
         width: 100%;
     }
 

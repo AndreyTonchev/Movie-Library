@@ -30,8 +30,7 @@ let params = new URLSearchParams(url.search);
 const page = params.get("page");
 
 
-
-onAuthStateChanged(auth, (user) => {
+ onAuthStateChanged(auth, async (user) => {
     if (user) { 
         document.querySelector(".profile-btn-span").textContent = user.displayName;     
         if(page === "watched") {
@@ -41,8 +40,10 @@ onAuthStateChanged(auth, (user) => {
             loadFavouriteMovies(user);
         }
         else {
-            loadPresetMovies(50);
-            loadAddedMovies();
+            // fetchMovies();
+            await loadPresetMovies(50);
+            await loadAddedMovies();
+            sortMovies("name", "asc");
         }
 
     } else {
@@ -53,33 +54,34 @@ onAuthStateChanged(auth, (user) => {
 });
 
 
-function loadPresetMovies(count) {
+async function loadPresetMovies(count) {
     const reference = ref(db, 'Movies/PresetMovies');
     const limited_query = query(reference, limitToFirst(count));
+    const snapshot = await get(limited_query);
 
-    onValue(limited_query, (snapshot) => {
-        snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
-    });
+    snapshot.forEach((child_snapshot) => addMovie(child_snapshot.val()));
+
 }
 
-function loadAddedMovies() {
+async function loadAddedMovies() {
     const movies_ref = ref(db, 'Movies/AddedMovies');
-    onValue(movies_ref, (snapshot) => {
-        snapshot.forEach((child_snapshot) => addMovie(child_snapshot.val()));
-    });
+    const snapshot = await get(movies_ref);
+
+    snapshot.forEach((child_snapshot) => addMovie(child_snapshot.val()));
+
 }
     
 function loadWatchedMovies(user) {
     const movies_ref = ref(db, 'Users/' + `${user.displayName}/` + "Watched");
     onValue(movies_ref, (snapshot) => {
-        snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
+        snapshot.forEach((child_snapshot) => addMovie(child_snapshot.val()));
     });
 }
 
 function loadFavouriteMovies(user) {
     const movies_ref = ref(db, 'Users/' + `${user.displayName}/` + "Favourite");
     onValue(movies_ref, (snapshot) => {
-        snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
+        snapshot.forEach((child_snapshot) => addMovie(child_snapshot.val()));
     });
 }
 

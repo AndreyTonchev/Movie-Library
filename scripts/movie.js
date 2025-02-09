@@ -127,8 +127,6 @@ async function removeAddedMovie(title) {
     window.location.href = "./index.html";
 
 
-
-
     async function clearFavoriteData(title) {
         const reference = ref(db, 'Movies/AddedMovies/' + title + "/Favourite");
 
@@ -142,6 +140,7 @@ async function removeAddedMovie(title) {
 
         await Promise.all(promises);
     }
+
 
     async function clearWatchedData(title) {
         const reference = await ref(db, 'Movies/AddedMovies/' + title + "/Watched");
@@ -286,8 +285,6 @@ function setRemoveBtn(movie_data) {
 }
 
 
-
-
 // ###################################    COMMENTS    #####################################################
 
 
@@ -325,7 +322,9 @@ function addComment(comment_data) {
     comments_list.appendChild(comment_line);
 }
 
+
 // ###################################    UTILS    #####################################################
+
 
 async function exist(path) {
     const reference = ref(db, path);
