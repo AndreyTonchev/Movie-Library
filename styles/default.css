@@ -42,12 +42,12 @@ img {
 }
   
 ::-webkit-scrollbar-track-piece {
-background-color: var(--background-color);
+background-color: var(--wrapper-color);
 }
 
 ::-webkit-scrollbar-thumb:vertical {
 height: 3px;
-background-color: var(--wrapper-color);
+background-color: var(--inner-border-color);
 }
 
 .default-svg{

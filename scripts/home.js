@@ -32,7 +32,8 @@ const page = params.get("page");
 
 
 onAuthStateChanged(auth, (user) => {
-    if (user) {      
+    if (user) { 
+        document.querySelector(".profile-btn-span").textContent = user.displayName;     
         if(page === "watched") {
             loadWatchedMovies(user);
         }
@@ -65,7 +66,7 @@ function loadPresetMovies(count) {
 function loadAddedMovies() {
     const movies_ref = ref(db, 'Movies/AddedMovies');
     onValue(movies_ref, (snapshot) => {
-        snapshot.forEach((childSnapshot) => addMovie(childSnapshot.val()));
+        snapshot.forEach((child_snapshot) => addMovie(child_snapshot.val()));
     });
 }
     
@@ -208,12 +209,20 @@ document.getElementById("home-btn").addEventListener("click", () => {
     window.location.href = "./index.html";
 });
 
+
 document.getElementById("watched-btn").addEventListener("click", () => {
     window.location = "./index.html?page=watched";
 });
 
+
 document.getElementById("favourites-btn").addEventListener("click", () => {
     window.location.href = "./index.html?page=favourites";
+});
+
+document.querySelector(".log-out-btn-wrapper").addEventListener("click", e=> {
+    signOut(auth)
+    .then(() => window.location="./login.html")
+    .catch((err) => console.error(err));  
 });
 
 
@@ -258,12 +267,6 @@ function saveMovieData(movie_data) {
         }
     });
 }
-
-document.querySelector(".log-out-btn-wrapper").addEventListener("click", e=> {
-    signOut(auth)
-    .then(() => window.location="./")
-    .catch((err) => console.error(err));  
-});
 
 
 // ###################################    SORT    #####################################################

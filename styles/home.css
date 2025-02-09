@@ -6,7 +6,7 @@
     display: flex;
 }
 
-/* LEFT SIDE */
+/* #############################   LEFT SIDE   ##################################### */
 
 .side-menu {
     display: flex;
@@ -83,7 +83,7 @@
 }
 
 
-/* RIGHT SIDE */
+/* #############################   RIGHT SIDE   ##################################### */
 
 .right-wrapper {
     flex: 1;
@@ -95,7 +95,7 @@
     display: flex;
 }
 
-/* TYPE SELECTION  */
+/* #############################   TYPE SELECION   ##################################### */
 
 .dropdown-type {
     width: 16%;
@@ -166,7 +166,7 @@
     color: var(--hover-font-color);
 }
 
-/* SORT DROPDOWN */
+/* #############################   SORT DROPDOWN   ##################################### */
 
 .dropdown-sort{ 
     width: 16%;
@@ -251,7 +251,7 @@
     }
 }
 
-/* SEARCH BAR */
+/* #############################   SEARCH BAR   ##################################### */
 
 .search-wrapper {
     display: flex;
@@ -278,7 +278,7 @@
     margin: auto 0.5rem;
 }
 
-/* MOVIES */
+/* #############################   MOVIES   ##################################### */
 
 .main-section {
     margin-top: 1rem;
@@ -379,7 +379,7 @@
     -webkit-text-fill-color: transparent;
 }
 
-/* Add Movie Modal */
+/* #############################   ADD MVOIE MODAL   ##################################### */
 
 
 #modal-overlay {
